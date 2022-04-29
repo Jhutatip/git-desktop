@@ -7,7 +7,7 @@ const data = [
                 "description" : "Kao"
     }]
 const app = express()
-const port = 8000
+const port = 3000
 app.use(express.json());
 
 app.get('/',(req:Request,res:Response)=>{
@@ -28,7 +28,7 @@ app.post('/',(req:Request ,res:Response)=>{
 app.put('/:id', (req ,res) => {
     const updateIndex = data.findIndex((data => data.id === req.params.id))
     res.json(Object.assign(data[updateIndex], req.body))
-    res.status(202).send("Accepted — request ")
+    res.status(202).send("Accepted  request ")
   })
 
 app.delete('/:id', (req:Request ,res:Response) => {
