@@ -14,22 +14,21 @@ app.get('/',(req:Request,res:Response)=>{
     console.log(JSON.stringify(req.headers));
     console.log('id: ' + req.query.id);
     res.json(data)
-    res.status(500).send("Internal Server Error ")
+    res.status(201).send(" succeed")
 
 });
-
 
 app.post('/',(req:Request ,res:Response)=>{
     const user = req.body
     data.push(user)
     res.json(data)
-    res.status(502).send(" Bad Gateway serve ")
+    res.status(203).send("Non-Authoritative Information  server ")
 })
 
 app.put('/:id', (req ,res) => {
     const updateIndex = data.findIndex((data => data.id === req.params.id))
     res.json(Object.assign(data[updateIndex], req.body))
-    res.status(503).send(" Service Unavailable")
+    res.status(202).send("Accepted — request ")
   })
 
 app.delete('/:id', (req:Request ,res:Response) => {
