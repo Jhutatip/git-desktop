@@ -34,7 +34,7 @@ app.put('/:id', (req, res) => {
 app.delete('/:id', (req, res) => {
     const deleteIndex = data.findIndex((data => data.id === req.params.id));
     data.splice(deleteIndex, 1);
-    res.status(205).send("Delete Success");
+    res.status(204).send("Delete Success");
 });
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
