@@ -1,37 +1,42 @@
-const express = require('express')
+import express, {Request, Response } from 'express'
+import {query} from 'express'
+const data = [
+    {
+                 "id" : "1",
+                "name" : "Jhutatip",
+                "description" : "Kao"
+    }]
 const app = express()
-const port = 3000
-const data = require('./data.json')
-const querystring = require('querystring');
+const port = 8000
 app.use(express.json());
 
-
-
-app.get('/',(req,res)=>{
+app.get('/',(req:Request,res:Response)=>{
     console.log(JSON.stringify(req.headers));
     console.log('id: ' + req.query.id);
     res.json(data)
-}); 
+    res.status(500).send("Internal Server Error ")
+
+});
 
 
-app.post('/',(req ,res)=>{
+app.post('/',(req:Request ,res:Response)=>{
     const user = req.body
     data.push(user)
     res.json(data)
+    res.status(502).send(" Bad Gateway serve ")
 })
-
-
 
 app.put('/:id', (req ,res) => {
     const updateIndex = data.findIndex((data => data.id === req.params.id))
     res.json(Object.assign(data[updateIndex], req.body))
+    res.status(503).send(" Service Unavailable")
   })
 
-app.delete('/:id', (req ,res) => {
+app.delete('/:id', (req:Request ,res:Response) => {
     const deleteIndex = data.findIndex((data => data.id === req.params.id))
     data.splice(deleteIndex, 1)
+    res.status(205).send("Delete Success")
 })
-
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
