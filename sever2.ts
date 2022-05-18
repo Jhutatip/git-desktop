@@ -5,7 +5,7 @@ const data = [
                  "id" : "1",
                 "name" : "Jhutatip",
                 "description" : "Kao"
-    }]
+    }];
 const app = express()
 const port = 3000
 app.use(express.json());
@@ -23,7 +23,7 @@ app.post('/',(req:Request ,res:Response)=>{
     data.push(user)
     res.json(data)
     res.status(203).send("Non-Authoritative Information  server ")
-})
+});
 
 app.put('/:id', (req ,res) => {
     const updateIndex = data.findIndex((data => data.id === req.params.id))
