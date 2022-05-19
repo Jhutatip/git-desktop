@@ -10,7 +10,7 @@ const app: Express = express();
 
 
 //movie create
-app.post("/movie-create",(req,res) => {
+app.post("/movie-create",(req:Request,res:Response) => {
     const payload = req.body;
     const movie = new Movieroger(payload);
     movie
@@ -24,7 +24,7 @@ app.post("/movie-create",(req,res) => {
   
 
   //get movie list
-  app.get("/moive-list",async(req:Request,res:Response)=>{
+  app.get("/list",(req:Request,res:Response)=>{
     Movieroger.find()
     .then((movies) => res.json(movies))
     .catch((err) => {
@@ -34,9 +34,9 @@ app.post("/movie-create",(req,res) => {
   
   
 //get movie by id
-app.get("/movie-id",async(req:Request,res:Response)=>{
+app.get("/movie-id",(req:Request,res:Response)=>{
   const id = req.params;
-  Movieroger.findOne({ id: id })
+  Movieroger.findById({ _id: id })
     .then((movies) => res.json(movies))
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -44,19 +44,49 @@ app.get("/movie-id",async(req:Request,res:Response)=>{
 })
 
 //update movie
-app.put("/update-movie",async(req:Request,res:Response)=>{
-  const update = req.params.id;
-  Movieroger.find()
-  .then((movies) => res.json(movies))
-    .catch((err) => {
+app.put("/update-movie/:movieId",(req,res)=>{
+  //const payload = req.params;
+  Movieroger.findByIdAndUpdate({_id: req.params.movieId})
+    .then(res.status(200).end)
+    .catch((err)=>{
       res.status(500).send({ message: err.message });
-    });
+  });
 })
+
 //delete movie
-//app.delete("/delete-movie",async(req:Request,res:Response)=>{
-//const movieObjects = await Movieroger.deleteOne( {movieName:Movieroger});
-//console.log('Document Deleted', Movieroger)
+app.delete("/delete-movie/:id",(req,res)=>{
+  const id = req.params.id;
+  Movieroger.findByIdAndRemove(id)
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
+        });
+      } else {
+        res.send({
+          message: "Tutorial was deleted successfully!"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Tutorial with id="+ id
+      });
+    });
+  })
+
+
+
+
+
+//app.put("/update-movie",async(req:Request,res:Response)=>{
+ // const update = req.params.id;
+ // Movieroger.find()
+//.then((movies) => res.json(movies))
+//.catch((err) => {
+//    });
 //})
+
 
   app.listen(port)
   console.log("App is running on port ${port}");
