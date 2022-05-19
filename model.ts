@@ -6,3 +6,4 @@ const movieSchema = new mongoose.Schema({
 })
 const Movieroger = mongoose.model("obj",movieSchema);
 export default Movieroger;
+
