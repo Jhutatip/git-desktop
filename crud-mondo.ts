@@ -1,6 +1,6 @@
 import express, {Express, Request, Response} from "express";
 import bodyParser from "body-parser";
-
+import { Movie, Imovie } from "./model";
 import connectMongo from "./mongo";
 connectMongo();
 

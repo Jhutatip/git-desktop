@@ -10,14 +10,14 @@ import bodyParser  from "body-parser";
 const app = express();
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended : false}));
-app.use(bodyParser.json);
+app.use(bodyParser.json());
 app.use(
   fileUpload({
   createParentPath: true
   })
 );
 
-const port = 9000;
+const port = 3000;
 
 //movie create
 app.post("/movie-create",async(req:any,res:any) => {
