@@ -2,44 +2,48 @@ import connectMongo from "./mongo";
 connectMongo();
 
 import Movie from "./model";
-import {response} from "express";
-import {request} from "http";
-import {error} from "console";
-import {Request} from "express";
 
-const express = require('express');
-const fileUpload = require('express-fileupload');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
-const _ = require('lodash');
+import express from  "express";
+import fileUpload from  "express-fileupload";
+import bodyParser  from "body-parser";
+
 const app = express();
-
 app.use(express.static('public'))
-app.use(fileUpload({
+app.use(bodyParser.urlencoded({extended : false}));
+app.use(bodyParser.json);
+app.use(
+  fileUpload({
   createParentPath: true
-}));
+  })
+);
 
-
-
-const port = 3000;
+const port = 9000;
 
 //movie create
-app.post("/movie-create",(req:any,res:any) => {
+app.post("/movie-create",async(req:any,res:any) => {
   const payload = req.body;
   const movie = new Movie(payload);
-  movie
-    .save()
-    .then(res.status(201).end())
-    .catch((error: { message: any; }) => {
-      res.status(500).send({ message: error.message });
-})
+  console.log(movie);
+
+  try{
+    const result = await movie.save();
+    res.send(result);
+  }catch(error:any){
+    res.status(500).send({ message: error.message });
+  }
+
+  //movie
+   // .save()
+    //.then(res.status(201).end())
+    //.catch((error: { message: any; }) => {
+     /// res.status(500).send({ message: error.message });
+//});
 });
 
 // get movie list
-app.get("/list",async(req:any,res:any)=>{
+app.get("/list",(req:any,res:any)=>{
   Movie.find()
-  .then((movies) => res.json(movies))
+  .then((Movie)=>res.json(Movie))
   .catch((err) => {
     res.status(500).send({ message: err.message });
   });
@@ -47,9 +51,9 @@ app.get("/list",async(req:any,res:any)=>{
   
   
 //get movie by id
-app.get("/movie-id",(req:any,res:any)=>{
-  const id = req.params;
-  Movie.findById({ _id: id })
+app.get("/movie-id/:id",(req:any,res:any)=>{
+  const id = req.params.id;
+  Movie.findById({ id: id })
     .then((movies) => res.json(movies))
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -59,7 +63,7 @@ app.get("/movie-id",(req:any,res:any)=>{
 //update movie
 app.put("/update-movie/:movieId",(req:any,res:any)=>{
   //const payload = req.params;
-  Movie.findByIdAndUpdate({_id: req.params.movieId})
+  Movie.findByIdAndUpdate({id: req.params.movieId})
     .then(res.status(200).end)
     .catch((err)=>{
       res.status(500).send({ message: err.message });
