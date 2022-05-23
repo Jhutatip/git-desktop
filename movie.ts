@@ -32,12 +32,31 @@ app.post("/movie-create",async(req:any,res:any) => {
     res.status(500).send({ message: error.message });
   }
 
-  //movie
-   // .save()
-    //.then(res.status(201).end())
-    //.catch((error: { message: any; }) => {
-     /// res.status(500).send({ message: error.message });
-//});
+  movie
+    .save()
+    .then(res.status(201).end())
+    .catch((error: { message: any; }) => {
+      res.status(500).send({ message: error.message });
+
+});
+
+app.post("/movies", async (req:MovieRequest, res:Response ) => {
+  const image = req?.files?.image as UploadedFile;
+  const UploadedFile =__dirname + "/uplonds/"+image.name;
+image.mv(uploadPath,(err) => {
+  if (err) console.iog (err);
+});
+const data ={
+  ...req.body,
+  image {
+    url :`http://localhost:${post}/${image.name}`,
+    size : image.size,
+    name: image.name,
+  },
+};
+
+res.send(data);
+
 });
 
 // get movie list
@@ -106,19 +125,6 @@ app.delete("/delete-movie/:id",(req:any,res:any)=>{
       });
     });
   })
-
-
-
-
-
-//app.put("/update-movie",async(req:Request,res:Response)=>{
- // const update = req.params.id;
- // Movieroger.find()
-//.then((movies) => res.json(movies))
-//.catch((err) => {
-//    });
-//})
-
 
   app.listen(port)
   console.log(`App is running on port ${port}`);
