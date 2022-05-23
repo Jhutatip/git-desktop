@@ -37,19 +37,19 @@ app.post("/movie-create",async(req:any,res:any) => {
     .then(res.status(201).end())
     .catch((error: { message: any; }) => {
       res.status(500).send({ message: error.message });
-
+    })
 });
 
 app.post("/movies", async (req:MovieRequest, res:Response ) => {
   const image = req?.files?.image as UploadedFile;
   const UploadedFile =__dirname + "/uplonds/"+image.name;
 image.mv(uploadPath,(err) => {
-  if (err) console.iog (err);
+  if (err) console.log (err);
 });
 const data ={
   ...req.body,
   image {
-    url :`http://localhost:${post}/${image.name}`,
+    url :`http://localhost:${port}/${image.name}`,
     size : image.size,
     name: image.name,
   },
