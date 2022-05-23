@@ -51,9 +51,9 @@ app.get("/list",(req:any,res:any)=>{
   
   
 //get movie by id
-app.get("/movie-id/:id",(req:any,res:any)=>{
-  const id = req.params.id;
-  Movie.findById({ id: id })
+app.get("/byid/:id",async(req:any,res:any)=>{
+  const id = await  req.params.id;
+  Movie.findById({ _id: id })
     .then((movies) => res.json(movies))
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -61,14 +61,29 @@ app.get("/movie-id/:id",(req:any,res:any)=>{
 })
 
 //update movie
-app.put("/update-movie/:movieId",(req:any,res:any)=>{
-  //const payload = req.params;
-  Movie.findByIdAndUpdate({id: req.params.movieId})
-    .then(res.status(200).end)
-    .catch((err)=>{
-      res.status(500).send({ message: err.message });
-  });
+
+app.put("/update-movie/:id",(req,res)=>{
+  //const payload = req.params.id;
+  const movie = Movie.findByIdAndUpdate(req.params.id, req.body)
+  .then(data => {
+    if (!data) {
+      res.status(404).send({
+        message: `Cannot update movie`
+      });
+    } else {
+      res.send({
+        message: "Tutorial was update successfully!"
+      });
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: `Could not update movie with id=${req.params.id}`
+    })
+    });    
 })
+
+
 
 //delete movie
 app.delete("/delete-movie/:id",(req:any,res:any)=>{
