@@ -5,13 +5,8 @@ import fileUpload,{UploadedFile} from "express-fileupload"
 import Movie from "./model";
 import { resolve } from "path";
 import express from  "express";
-import { request } from "http";
-import { error } from "console";
 import bodyParser  from "body-parser";
 
-
-const morgan = require('morgan');
-const _ = require('lodash');
 const port = 3000;
 const app = express();
 app.use(express.static("uploads"));
@@ -20,12 +15,6 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 
-
-app.use(
-  fileUpload({
-  createParentPath: true
-  })
-);
 
 
 //movie create
@@ -49,23 +38,23 @@ app.post("/movie-create",async(req:any,res:any) => {
     })
 });
 
-app.post("/movies", async (req:MovieRequest,res:Response ) => {
+app.post("/movies", async (req:express.Request,res:express.Response ) => {
   const image = req?.files?.image as UploadedFile;
   const uploadedPath =__dirname + "/uploads/"+image.name;
   
-image.mv(uploadedPath,(err) => {
-  if (err) console.log (err);
-});
-const data ={
-  ...req.body,
-  image : {
+  image.mv(uploadedPath,(err) => {
+    if (err) console.log (err);
+  });
+  const data ={
+    ...req.body,
+    image :{
     url :`http://localhost:${port}/${image.name}`,
     size : image.size,
     name: image.name,
-  },
-};
-
-res.send(data);
+    },
+  };
+  const movie = await Movie.create(data);
+  res.send(data)
 
 });
 
