@@ -7,7 +7,7 @@ import { resolve } from "path";
 import express from  "express";
 import bodyParser  from "body-parser";
 
-const port = 3000;
+const port = 8000;
 const app = express();
 app.use(express.static("uploads"));
 app.use(fileUpload());
@@ -22,6 +22,7 @@ app.post("/movie-create",async(req:any,res:any) => {
   const payload = req.body;
   const movie = new Movie(payload);
   console.log(movie);
+ 
 
   try{
     const result = await movie.save();
@@ -47,6 +48,7 @@ app.post("/movies", async (req:express.Request,res:express.Response ) => {
   });
   const data ={
     ...req.body,
+    price:req.body.price /90,
     image :{
     url :`http://localhost:${port}/${image.name}`,
     size : image.size,
@@ -54,7 +56,7 @@ app.post("/movies", async (req:express.Request,res:express.Response ) => {
     },
   };
   const movie = await Movie.create(data);
-  res.send(data)
+  res.send(movie)
 
 });
 
@@ -127,3 +129,4 @@ app.delete("/delete-movie/:id",(req:any,res:any)=>{
 
   app.listen(port)
   console.log(`App is running on port ${port}`);
+
