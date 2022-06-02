@@ -25,7 +25,7 @@ app.post("/movie-create",async(req:any,res:any) => {
  
 
   try{
-    const result = await movie.save();
+    const result =  movie.save();
     res.send(result);
   }catch(error:any){
     res.status(500).send({ message: error.message });
