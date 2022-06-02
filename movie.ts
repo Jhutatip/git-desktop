@@ -131,7 +131,24 @@ app.delete("/delete-movie/:id",(req:any,res:any)=>{
       });
     });
   })
+  const promise = new Promise((resolve,reject)=>{
+    if (true){
+      resolve('Success');
+    }else{
+      reject('Failed');
+    }
+  });
+  promise.then((msg)=> console.log(msg))
+  .catch((msg)=>console.log(msg));
 
+
+  
   app.listen(port)
   console.log(`App is running on port ${port}`);
+  
+
+
+
+
+
 
