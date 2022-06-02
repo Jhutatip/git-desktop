@@ -39,7 +39,7 @@ app.post("/movie-create",async(req:any,res:any) => {
     })
 });
 
-app.post("/movies", async (req:express.Request,res:express.Response ) => {
+app.post("/movies", (req:express.Request,res:any ) => {
   const image = req?.files?.image as UploadedFile;
   const uploadedPath =__dirname + "/uploads/"+image.name;
   
@@ -55,8 +55,13 @@ app.post("/movies", async (req:express.Request,res:express.Response ) => {
     name: image.name,
     },
   };
-  const movie = await Movie.create(data);
-  res.send(movie)
+  const movie = Movie.create(data);
+  movie 
+  .then(res.send(movie))
+  .catch((err)=> {
+    res.status(500).send({ message: err.message });
+  })
+  
 
 });
 
