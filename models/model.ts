@@ -33,4 +33,3 @@ const movieSchema = new Schema<MovieDocument>({
 
 export const Movie = model<MovieDocument>("movies",movieSchema);
 export default Movie;
- 
