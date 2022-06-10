@@ -1,6 +1,7 @@
 import express,{ Express,Request,Response } from "express";
 import connectMongo from "./connect/mongo";
 connectMongo();
+
 import fileUpload,{UploadedFile} from "express-fileupload";
 import bodyParser from "body-parser";
 import cors from "cors"

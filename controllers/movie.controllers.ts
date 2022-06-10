@@ -45,7 +45,6 @@ export const getPic = (req:Request,res:any)=>{
     });
     const data ={
         ...req.body,
-        price:req.body.price/30+ "Dollars",
         image:{
             url: `http://localhost:${process.env.port}/${image.name}`,
             size: image.size,
