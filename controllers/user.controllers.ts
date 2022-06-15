@@ -2,12 +2,7 @@ import express,{Express,Request,Response} from "express";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import User from "../models/user.models"
-require("dotenv").config();
-
-
-
-
-
+ require("dotenv").config();
 
 const app = express();
 
@@ -46,9 +41,9 @@ export const regis = async(req:Request,res:Response)=>{
         
         const token = jwt.sign(
           { user_id: user._id, email },
-          process.env.TOKEN_KEY,
+            process.env.TOKEN_KEY,
           {
-            expiresIn: "39m",
+            expiresIn: "2h",
           }
         );
         
@@ -78,7 +73,7 @@ export const login = async(req:Request, res:Response)=>{
             
             const token = jwt.sign(
                 {user_id: user._id,email},
-                process.env.TOKEN_KEY,
+                  process.env.TOKEN_KEY,
                 {
                     expiresIn: "2h",
                 }
@@ -96,6 +91,8 @@ export const login = async(req:Request, res:Response)=>{
 export const welcome = (req:Request,res:Response)=>{
     res.status(200).send("welcome 🐬");
   }
+
+  
 export default exports;
 
 

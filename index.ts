@@ -8,7 +8,7 @@ connectMongo();
 import fileUpload,{UploadedFile} from "express-fileupload";
 import bodyParser from "body-parser";
 import cors from "cors"
-
+import dotenv from 'dotenv';
 
 import router from "./routes/user.routes";
 import userRoute from "./routes/movie.router";
@@ -17,7 +17,7 @@ import userRoute from "./routes/movie.router";
 import { requestTime } from "./middlewares/date.middlewares";
 import  requestMethod  from "./middlewares/mets.middewares";
 
-
+dotenv.config();
 const app:Express = express();
 
 
